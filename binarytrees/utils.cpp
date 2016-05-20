@@ -177,3 +177,67 @@ void printTreePreOrder(node *root, bool leftFirst)
 
 }
 
+// Post order traversal without recursion
+// Second argument decides whether we will traverse 
+// left side before right side
+
+struct nodeVisitor
+{
+    nodeVisitor(node *e1, bool left, bool right)
+    :
+    e(e1),
+    lvisited(left),
+    rvisited(right)
+    {
+    }
+
+    node *e;
+    bool lvisited; // whether we visited left child
+    bool rvisited; // whether we visited right child
+};
+
+void printTreePostOrder(node *root, bool leftFirst)
+{
+    stack<nodeVisitor> s;
+
+    if (root)
+    {
+        s.push(nodeVisitor(root, false, false));
+    }
+
+    while (s.empty() == false)
+    {
+        nodeVisitor n = s.top();
+        s.pop();
+        
+        if (n.e->left == NULL && n.e->right == NULL)
+        {
+            cout << n.e->val << endl;
+        }
+        else if (n.lvisited == false)
+        {
+            s.push(nodeVisitor(n.e, true, false));
+            if (n.e->left)
+            {
+                s.push(nodeVisitor(n.e->left, false, false));
+            }
+        }
+        else if (n.rvisited == false)
+        {
+            s.push(nodeVisitor(n.e, true, true));
+            if (n.e->right)
+            {
+                s.push(nodeVisitor(n.e->right, false, false));
+            }
+        }
+        else
+        {
+            cout << n.e->val << endl;
+        }
+
+    }
+
+
+
+}
+

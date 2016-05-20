@@ -30,3 +30,4 @@ typedef struct node
 node * readTree(const string &file);
 void printTreeBF(node *root);
 void printTreePreOrder(node *root, bool leftFirst);
+void printTreePostOrder(node *root, bool leftFirst);

@@ -8,5 +8,9 @@ int main(int argc, char **argv)
 
     cout << "Printing tree pre order" << endl;
     printTreePreOrder(root, true);
+
+
+    cout << "Printing tree post order" << endl;
+    printTreePostOrder(root, true);
     return 0;
 }
