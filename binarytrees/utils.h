@@ -18,12 +18,14 @@ typedef struct node
     node(const string &str)
     : left(NULL),
     right(NULL),
+    parent(NULL),
     val(str)
     {
     };
 
     node *left;
     node *right;
+    node *parent;
     string val;
 } node;
 

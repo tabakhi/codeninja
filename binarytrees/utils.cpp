@@ -45,6 +45,8 @@ void setChild(unordered_map<uint32_t, node *>& nodes,
             << parentRank << endl;
     }
 
+    curr->parent = nodes[parentRank];
+
 }
 
 
