@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     printTreePreOrder(root, true);
 
 
-    cout << "Printing tree post order" << endl;
-    printTreePostOrder(root, true);
+    cout << "Printing tree in order" << endl;
+    printTreeInOrder(root, true);
     return 0;
 }

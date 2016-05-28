@@ -179,6 +179,31 @@ void printTreePreOrder(node *root, bool leftFirst)
 
 }
 
+// In order traversal without recursion
+// Second argument decides whether we will traverse 
+// left side before right side
+void printTreeInOrder(node *root, bool leftFirst)
+{
+    stack<node *> nodes;
+
+    while (root || !nodes.empty())
+    {
+        if (root)
+        {
+            nodes.push(root);
+            root = root->left;
+        }
+        else
+        {
+            root = nodes.top();
+            nodes.pop();
+            cout << root->val << endl;
+            root = root->right;
+        }
+    }
+
+}
+
 // Post order traversal without recursion
 // Second argument decides whether we will traverse 
 // left side before right side
