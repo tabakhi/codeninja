@@ -4,6 +4,7 @@
 bool onEdge = true;
 
 // Only traverse the left subtree rooted at the root
+// do a preorder traversal and avoid the leaves
 void printLeft(node *root)
 {
     cout << "Invoking printLeft on " << root->val << " (onEdge = " <<
@@ -20,13 +21,14 @@ void printLeft(node *root)
         onEdge = false;
     }
 
-    if (root->right)
+    if (onEdge && root->right)
     {
         printLeft(root->right);
     }
 }
 
 // Only traverse the right subtree rooted at the root
+// do a postorder traversal and avoid the leaves
 void printRight(node *root)
 {
     cout << "Invoking printRight on " << root->val << " (onEdge = " <<
