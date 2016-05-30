@@ -1,106 +1,96 @@
 // Problem 10.15: Compute the exterior of a binary tree
 #include "utils.h"
 
-bool onEdge = true;
-
 // Only traverse the left subtree rooted at the root
 // do a preorder traversal and avoid the leaves
-void printLeft(node *root)
+void printLeft(node *root, string &strExterior)
 {
-    cout << "Invoking printLeft on " << root->val << " (onEdge = " <<
-        onEdge << ")" << endl;
+    cout << "Invoking printLeft on " << root->val << endl;
 
-    if (onEdge && (root->left || root->right))
+    if ((root->left || root->right))
     {
-        cout << root->val << endl;
+        strExterior += ",";
+        strExterior += root->val;
     }
 
     if (root->left)
     {
-        printLeft(root->left);
-        onEdge = false;
+        printLeft(root->left, strExterior);
     }
-
-    if (onEdge && root->right)
+    else if (root->right)
     {
-        printLeft(root->right);
+        printLeft(root->right, strExterior);
     }
 }
 
 // Only traverse the right subtree rooted at the root
 // do a postorder traversal and avoid the leaves
-void printRight(node *root)
+void printRight(node *root, string &strExterior)
 {
-    cout << "Invoking printRight on " << root->val << " (onEdge = " <<
-        onEdge << ")" << endl;
+    cout << "Invoking printRight on " << root->val << endl;
 
     if (root->right)
     {
-        printRight(root->right);
+        printRight(root->right, strExterior);
+    }
+    else if (root->left)
+    {
+        printRight(root->left, strExterior);
     }
 
-    if (!onEdge &&root->left)
+    if ((root->left || root->right))
     {
-        printRight(root->left);
-    }
-
-    if (onEdge == false && root->left == NULL && root->right == NULL)
-    {
-        onEdge = true;
-    }
-
-    if (onEdge && (root->left || root->right))
-    {
-        cout << root->val << endl;
+        strExterior += ",";
+        strExterior += root->val;
     }
 }
 
-void printLeaves(node *root)
+void printLeaves(node *root, string &strExterior)
 {
     if (root->left)
     {
-        printLeaves(root->left);
+        printLeaves(root->left, strExterior);
     }
 
     if (root->left == NULL && root->right == NULL)
     {
-        cout << root->val << endl;
+        strExterior += ",";
+        strExterior += root->val;
     }
 
     if (root->right)
     {
-        printLeaves(root->right);
+        printLeaves(root->right, strExterior);
     }
 }
 
 void printExterior(node *root)
 {
+    string strExterior;
+
     if (root)
     {
         // Avoid printing the root otherwise we will print it twice
         // when we visit the leaves
         if (root->left || root->right)
         {
-            cout << root->val << endl;
+            strExterior += root->val;
         }
 
-        // Change it to false when we come back from the first leaf
-        onEdge = true;
         if (root->left)
         {
-            printLeft(root->left);
+            printLeft(root->left, strExterior);
         }
 
-        printLeaves(root);
+        printLeaves(root, strExterior);
 
-        // Initially it must be false and true only when we
-        // visit the first leaf
-        onEdge = false;
         if (root->right)
         {
-            printRight(root->right);
+            printRight(root->right, strExterior);
         }
     }
+
+    cout << strExterior << endl;
 }
 
 int main(int argc, char **argv)
