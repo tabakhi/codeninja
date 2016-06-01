@@ -208,63 +208,45 @@ void printTreeInOrder(node *root, bool leftFirst)
 // Second argument decides whether we will traverse 
 // left side before right side
 
-struct nodeVisitor
-{
-    nodeVisitor(node *e1, bool left, bool right)
-    :
-    e(e1),
-    lvisited(left),
-    rvisited(right)
-    {
-    }
-
-    node *e;
-    bool lvisited; // whether we visited left child
-    bool rvisited; // whether we visited right child
-};
-
+// To do a postorder traversal we do a reverse pre order traversal
+// where we print right child before left child.
+// I.e. Parent, Right, Left
+// Instead of printing preorder traversal nodes we push them on
+// stack and then after visiting all the nodes we just print the 
+// stack
+// http://www.geeksforgeeks.org/iterative-postorder-traversal/
 void printTreePostOrder(node *root, bool leftFirst)
 {
-    stack<nodeVisitor> s;
+    stack<node *> s1, s2;
 
     if (root)
     {
-        s.push(nodeVisitor(root, false, false));
+        s1.push(root);
     }
 
-    while (s.empty() == false)
+    while (s1.empty() == false)
     {
-        nodeVisitor n = s.top();
-        s.pop();
-        
-        if (n.e->left == NULL && n.e->right == NULL)
-        {
-            cout << n.e->val << endl;
-        }
-        else if (n.lvisited == false)
-        {
-            s.push(nodeVisitor(n.e, true, false));
-            if (n.e->left)
-            {
-                s.push(nodeVisitor(n.e->left, false, false));
-            }
-        }
-        else if (n.rvisited == false)
-        {
-            s.push(nodeVisitor(n.e, true, true));
-            if (n.e->right)
-            {
-                s.push(nodeVisitor(n.e->right, false, false));
-            }
-        }
-        else
-        {
-            cout << n.e->val << endl;
-        }
+        node *curr = s1.top();
+        s1.pop();
 
+        s2.push(curr);
+
+        if (curr->left)
+        {
+            s1.push(curr->left);
+        }
+        if (curr->right)
+        {
+            s1.push(curr->right);
+        }
     }
 
+    while (s2.empty() == false)
+    {
+        node *curr = s2.top();
+        s2.pop();
 
-
+        cout << curr->val << endl;
+    }
 }
 

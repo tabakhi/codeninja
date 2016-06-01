@@ -12,5 +12,9 @@ int main(int argc, char **argv)
 
     cout << "Printing tree in order" << endl;
     printTreeInOrder(root, true);
+
+    cout << "Printing tree post order" << endl;
+    printTreePostOrder(root, true);
+
     return 0;
 }
