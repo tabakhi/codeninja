@@ -63,8 +63,6 @@ void sortStack(stack<int> &s)
 
     sortStack(s);
 
-     // only one element in the stack when we were called so just 
-     // restore it and consider it sorted
     insert(s, curr);
 
     cout << __FUNCTION__ << " finished on stack size = " << s.size() 
