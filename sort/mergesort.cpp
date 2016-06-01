@@ -70,6 +70,13 @@ void tdsort(vector<int> &a, size_t begin, size_t end)
 
     cout << __FUNCTION__ << " finished begin = " << begin 
         << " end = " << end << endl;
+
+    cout << "Partially sorted array looks like this " << endl;
+    for (size_t i = 0; i < a.size(); i++)
+    {
+        cout << a[i] << " ";
+    }
+    cout << endl;
 }
 
 int main(int argc, char **argv)
