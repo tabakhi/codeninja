@@ -22,9 +22,6 @@ void printStack(const stack<int> &s)
     cout << endl;
 }
 
-// Right now val is less than what is at the top of the stack
-// so pop the top item and try again with the next item 
-// recursively
 void insert(stack<int> &s, int val)
 {
     cout << __FUNCTION__ << " stack size = " << s.size() 
