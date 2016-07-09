@@ -79,6 +79,35 @@ void tdsort(vector<int> &a, size_t begin, size_t end)
     cout << endl;
 }
 
+void bottomup(vector<int> &a)
+{
+    size_t n = a.size();
+
+    size_t width = 0;
+    for (width = 1; width < n; width *= 2)
+    {
+        cout << "Merging sublists of width = " << width << endl;
+
+        for (size_t i = 0; i < n; i += width*2)
+        {
+            size_t begin = i;
+            size_t mid = i + width;
+            size_t end = std::min(i + width*2, n);
+            cout << "i = " << i <<
+            " begin = " << begin <<
+            " mid = " << mid <<
+            " end = " << end << 
+            endl;
+
+            tdmerge(a, begin, mid, end);
+        }
+
+        cout << "List after sorting sublists of width = " << width << endl;
+        printArray(a);
+    }
+
+}
+
 int main(int argc, char **argv)
 {
     // Read the numbers from file
@@ -92,7 +121,8 @@ int main(int argc, char **argv)
     }
 
     printArray(numbers);
-    tdsort(numbers, 0, numbers.size());
+    //tdsort(numbers, 0, numbers.size());
+    bottomup(numbers);
     printArray(numbers);
 
     return 0;
