@@ -51,7 +51,7 @@ void printA(int *a, int n)
 }
 
 // find the nth element
-int quickselect(int *a, int left, int right, int n)
+int quickselect(int *a, int left, int right, int n, int N)
 {
     cout << __func__ << " left = " << left << " " << "right = "
     << right << " n = " << n << endl;
@@ -62,6 +62,10 @@ int quickselect(int *a, int left, int right, int n)
     int pivotindex = left + (rand() % (right - left + 1));
 
     int index = partition(a, left, right, pivotindex);
+
+    cout << "After that array contents are: " << endl;
+    printA(a, N);
+
     if (index == n)
     {
         return a[index];
@@ -69,11 +73,11 @@ int quickselect(int *a, int left, int right, int n)
     else if (index > n)
     {
         // TODO: zero should be changed to left
-        return quickselect(a, 0, index-1, n);
+        return quickselect(a, 0, index-1, n, N);
     }
     else
     {
-        return quickselect(a, index+1, right, n);
+        return quickselect(a, index+1, right, n, N);
     }
 
 }
@@ -82,11 +86,11 @@ int main(int argc, char **argv)
 {
     uint32_t k = atoi(argv[1]);
 
-    int a [] = {2, 4, 5, 8, 7, 0, 9, 6, 3, 1};
+    int a [] = {7, 14, 10, 12, 2, 11, 29, 3, 4};
 
-    int kc = quickselect(a, 0, 9, k-1);
+    int kc = quickselect(a, 0, 8, k-1, sizeof(a)/sizeof(a[0]));
 
-    cout << a[kc] << " , the " << kc << " th element" << endl;
+    cout << kc << " is the " << k << "th element" << endl;
     printA(a, sizeof(a)/sizeof(a[0]));
 
     return 0;
