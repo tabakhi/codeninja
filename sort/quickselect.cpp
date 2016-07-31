@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <vector>
+#include <fstream>
 #include <iostream>
 using namespace std;
 
@@ -84,14 +86,32 @@ int quickselect(int *a, int left, int right, int n, int N)
 
 int main(int argc, char **argv)
 {
-    uint32_t k = atoi(argv[1]);
+    // Read the numbers from file
+    ifstream inFile(argv[1]);
+    // Find the kth element (i.e. k = 1 is the 1st element)
+    uint32_t k = atoi(argv[2]);
 
-    int a [] = {7, 14, 10, 12, 2, 11, 29, 3, 4};
+    // I wrote the quickselect code using raw pointers to int
+    // So I am first reading to a vector and then copying the
+    // numbers to the int array
+    int n;
+    vector<int> numbers;
+    while (inFile >> n)
+    {
+        numbers.push_back(n);
+    }
 
-    int kc = quickselect(a, 0, 8, k-1, sizeof(a)/sizeof(a[0]));
+    int *a = new int[numbers.size()];
+    for (size_t i = 0; i < numbers.size(); i++)
+    {
+        a[i] = numbers[i];
+    }
+
+    int kc = quickselect(a, 0, numbers.size() - 1, k - 1, numbers.size());
 
     cout << kc << " is the " << k << "th element" << endl;
-    printA(a, sizeof(a)/sizeof(a[0]));
+    printA(a, numbers.size());
 
+    delete [] a;
     return 0;
 }
