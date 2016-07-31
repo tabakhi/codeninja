@@ -74,8 +74,7 @@ int quickselect(int *a, int left, int right, int n, int N)
     }
     else if (index > n)
     {
-        // TODO: zero should be changed to left
-        return quickselect(a, 0, index-1, n, N);
+        return quickselect(a, left, index-1, n, N);
     }
     else
     {
