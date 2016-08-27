@@ -1,4 +1,4 @@
-// 6.21: Sudoku checker
+// 6.22: Print a 2D array in spiral order
 #include <stdlib.h>
 #include <assert.h>
 #include <iostream>
