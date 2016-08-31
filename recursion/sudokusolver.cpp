@@ -118,62 +118,60 @@ void makePossible(vector< vector<int> > &a,
 
 }
 
-bool check(vector< vector<int> > &a)
+bool check(vector< vector<int> > &a, size_t r, size_t c)
 {
-    // check rows
-    for (size_t i = 0; i < N; i++)
+    // check row
+    int set[N] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    for (size_t j = 0; j < N; j++)
     {
-        int set[N] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-        for (size_t j = 0; j < N; j++)
+        if (a[r][j])
         {
-            if (a[i][j])
+            if (set[a[r][j] - 1])
             {
-                if (set[a[i][j] - 1])
-                {
-                    return false;
-                }
-                set[a[i][j] - 1] = a[i][j];
+                return false;
             }
+            set[a[r][j] - 1] = a[r][j];
         }
     }
 
-    // check cols
-    for (size_t j = 0; j < N; j++)
+    // check col
+    for (size_t i = 0; i < N; i++)
     {
-        int set[N] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-        for (size_t i = 0; i < N; i++)
+        set[i] = 0;
+    }
+
+    for (size_t i = 0; i < N; i++)
+    {
+        if (a[i][c])
         {
-            if (a[i][j])
+            if (set[a[i][c] - 1])
             {
-                if (set[a[i][j] - 1])
-                {
-                    return false;
-                }
-                set[a[i][j] - 1] = a[i][j];
+                return false;
             }
+            set[a[i][c] - 1] = a[i][c];
         }
     }
 
     // check subgrid
-    for (size_t r = 0; r < 9; r += 3)
-    {
-        for (size_t c = 0; c < 9; c += 3)
-        {
-            int set[N] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    r /= 3;
+    c /= 3;
 
-            for (size_t i = r; i < r + 3; i++)
+    for (size_t i = 0; i < N; i++)
+    {
+        set[i] = 0;
+    }
+
+    for (size_t i = r*3; i < r*3 + 3; i++)
+    {
+        for (size_t j = c*3; j < c*3; j++)
+        {
+            if (a[i][j])
             {
-                for (size_t j = c; j < c + 3; j++)
+                if (set[a[i][j] - 1])
                 {
-                    if (a[i][j])
-                    {
-                        if (set[a[i][j] - 1])
-                        {
-                            return false;
-                        }
-                        set[a[i][j] - 1] = a[i][j];
-                    }
+                    return false;
                 }
+                set[a[i][j] - 1] = a[i][j];
             }
         }
     }
@@ -284,7 +282,7 @@ bool solve(vector< vector<int> > &a,
                 endl;
             a[r][c] = possible[r*N + c][k];
 
-            if (check(a) == false)
+            if (check(a, r, c) == false)
             {
                 cout << "check failed, continuing" << endl;
                 continue;
