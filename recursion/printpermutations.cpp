@@ -107,9 +107,11 @@ int main(int argc, char **argv)
         numbers.push_back(atoi(argv[i]));
     }
 
-    //printperms(numbers, 0);
-    vector< vector<int> > result = Permutations(numbers);
-    printResult(result);
+    printperms(numbers, 0);
+    // This is the solution from the textbook which does not 
+    // yield the permutations in dictionary order
+    //vector< vector<int> > result = Permutations(numbers);
+    //printResult(result);
     return 0;
 }
 
