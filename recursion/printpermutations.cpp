@@ -63,6 +63,41 @@ void printperms(vector<int> numbers, size_t depth)
 
 }
 
+void PermutationsHelper(size_t i, vector<int> *A,
+                        vector< vector<int> > *result)
+{
+    if (i == A->size())
+    {
+        result->push_back(*A);
+    }
+
+    for (size_t j = i; j < A->size(); j++)
+    {
+        swap((*A)[i], (*A)[j]);
+        PermutationsHelper(i+1, A, result);
+        swap((*A)[i], (*A)[j]);
+    }
+}
+
+vector< vector<int> > Permutations(vector<int> A)
+{
+    vector< vector<int> > result;
+    PermutationsHelper(0, &A, &result);
+    return result;
+}
+
+void printResult(const vector< vector<int> > &result)
+{
+    for (size_t i = 0; i < result.size(); i++)
+    {
+        for (size_t j = 0; j < result[i].size(); j++)
+        {
+            cout << result[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
 int main(int argc, char **argv)
 {
     vector<int> numbers;
@@ -72,8 +107,9 @@ int main(int argc, char **argv)
         numbers.push_back(atoi(argv[i]));
     }
 
-    printperms(numbers, 0);
-
+    //printperms(numbers, 0);
+    vector< vector<int> > result = Permutations(numbers);
+    printResult(result);
     return 0;
 }
 
