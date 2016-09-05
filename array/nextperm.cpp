@@ -1,4 +1,4 @@
-// 6.6 Delete duplicates from a sorted array
+// 6.14 Compute the next permutation
 #include <stdlib.h>
 #include <assert.h>
 #include <iostream>
@@ -55,9 +55,16 @@ bool nextPerm(int *a, size_t n)
     }
     
     // sort all elements between i+1 and n-1
+    // simply reversing them is sufficient
     if (k >= 0)
     {
         std::sort(a+i+1, a+n);
+        int j = i+1;
+        k = n-1; // reuse variable
+        while (j > k)
+        {
+            std::swap(a[j++], a[k--]);
+        }
         return true;
     }
     else
