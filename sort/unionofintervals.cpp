@@ -38,141 +38,128 @@ void makeUnion(const vector< pair<int, int> > &a,
         vector< pair<int, int> > &result)
 
 {
-    if (a.size() == 0)
-    {
-        result.push_back(g);
-    }
     // E.g. g = [5, 100] a0 = 7, 11 a(n-1) = [95, 99] 
-    else if (g.first <= a[0].first && g.second >= a[a.size()-1].second)
-    {
-        result.push_back(g);
-    }
+
     // E.g. g = [7, 10], a = [12, 15], ....
-    else if (g.second < a[0].first)
-    {
-        result.push_back(g);
-        appendA(a, 0, a.size(), result);
-    }
+
     // E.g. g = [7, 12], a = [12, 15], ....
     // Union = [7, 15], a[1], a[2], ...
-    else if (g.second == a[0].first)
-    {
-        pair<int, int> g2(g.first, a[0].second);
-        result.push_back(g2);
-        appendA(a, 1, a.size(), result);
-    }
+
     // E.g. a = .... [75, 90] g = [90, 99]
     // Union = a[0], a[1], ... a[n-2], [75, 99]
-    else if (g.first == a[a.size()-1].second)
-    {
-        pair<int, int> g2(a[a.size()-1].first, g.second);
-        appendA(a, 0, a.size()-1, result);
-        result.push_back(g2);
-    }
+    
     // E.g. a = .... [75, 90] g = [93, 99]
-    else if (g.first > a[a.size()-1].second)
+
+    bool foundStart = false;
+    bool foundEnd = false;
+    bool startIntersects = false;
+    bool endIntersects = false;
+    size_t start = 0;
+    size_t end = 0;
+
+    pair <int, int> g2;
+
+    for (size_t i = 0; i < a.size(); i++)
     {
-        appendA(a, 0, a.size(), result);
-        result.push_back(g);
+        if (!foundStart && g.first < a[i].first)
+        {
+            foundStart = true;
+            start = i;
+        }
+
+        if (!foundStart && g.first == a[i].first)
+        {
+            foundStart = true;
+            startIntersects = true;
+            start = i;
+        }
+
+        if (!foundStart && g.first < a[i].second)
+        {
+            foundStart = true;
+            startIntersects = true;
+            start = i;
+        }
+
+        if (!foundStart && g.first == a[i].second)
+        {
+            foundStart = true;
+            startIntersects = true;
+            start = i;
+        }
+
+        if (foundStart && !foundEnd && g.second < a[i].first)
+        {
+            foundEnd = true;
+            end = i;
+        }
+
+        if (foundStart && !foundEnd && g.second == a[i].first)
+        {
+            foundEnd = true;
+            endIntersects = true;
+            end = i;
+        }
+
+        if (foundStart && !foundEnd && g.second < a[i].second)
+        {
+            foundEnd = true;
+            endIntersects = true;
+            end = i;
+            end = i;
+        }
+
+        if (foundStart && !foundEnd && g.second == a[i].second)
+        {
+            foundEnd = true;
+            endIntersects = true;
+            end = i;
+            end = i;
+        }
+    } // for loop
+
+    // now combine
+    for (size_t i = 0; i < start; i++)
+    {
+        result.push_back(a[i]);
+    }
+
+    if (startIntersects)
+    {
+        g2.first = a[start].first;
     }
     else
     {
-        bool foundStart = false;
-        bool foundEnd = false;
-        bool startIntersects = false;
-        bool endIntersects = false;
-        size_t start = 0;
-        size_t end = 0;
+        g2.first = g.first;
+    }
 
-        pair <int, int> g2;
+    if (endIntersects)
+    {
+        g2.second = a[end].second;
+        ++end;
+    }
+    else
+    {
+        g2.second = g.second;
+    }
 
+    if (!foundStart && !foundEnd)
+    {
         for (size_t i = 0; i < a.size(); i++)
-        {
-            if (!foundStart && g.first < a[i].first)
-            {
-                foundStart = true;
-                start = i;
-            }
-
-            if (!foundStart && g.first == a[i].first)
-            {
-                foundStart = true;
-                startIntersects = true;
-                start = i;
-            }
-
-            if (!foundStart && g.first < a[i].second)
-            {
-                foundStart = true;
-                startIntersects = true;
-                start = i;
-            }
-
-            if (!foundStart && g.first == a[i].second)
-            {
-                foundStart = true;
-                startIntersects = true;
-                start = i;
-            }
-
-            if (foundStart && !foundEnd && g.second < a[i].first)
-            {
-                foundEnd = true;
-                end = i;
-            }
-
-            if (foundStart && !foundEnd && g.second == a[i].first)
-            {
-                foundEnd = true;
-                endIntersects = true;
-                end = i;
-            }
-
-            if (foundStart && !foundEnd && g.second < a[i].second)
-            {
-                foundEnd = true;
-                endIntersects = true;
-                end = i;
-                end = i;
-            }
-
-            if (foundStart && !foundEnd && g.second == a[i].second)
-            {
-                foundEnd = true;
-                endIntersects = true;
-                end = i;
-                end = i;
-            }
-        } // for loop
-
-        // now combine
-        for (size_t i = 0; i < start; i++)
         {
             result.push_back(a[i]);
         }
-
-        if (startIntersects)
-        {
-            g2.first = a[start].first;
-        }
-        else
-        {
-            g2.first = g.first;
-        }
-
-        if (endIntersects)
-        {
-            g2.second = a[end].second;
-            ++end;
-        }
-        else
-        {
-            g2.second = g.second;
-        }
-
+        result.push_back(g2);
+    }
+    else if (foundStart && !foundEnd)
+    {
+        result.push_back(g2);
+    }
+    else
+    {
         result.push_back(g2);
 
-        for (size_t i = end; i <= a.size() - 1 && foundEnd; i++)
+        for (size_t i = end; i < a.size(); i++)
         {
             result.push_back(a[i]);
         }
