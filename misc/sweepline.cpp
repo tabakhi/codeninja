@@ -33,17 +33,69 @@ class event
 {
  public:
   line *pLine; 
+  int x; // x position
   int type; // 1 = horiz. 2 = vertic.
   bool start; // start of line or end (applies to horizonal lines)
 
-  void init(line *line, int type, bool astart);
+  void init(line *line, int x, int type, bool astart);
 };
 
-void event::init(line *line, int atype, bool astart)
+void event::init(line *line, int ax, int atype, bool astart)
 {
     pLine = line;
+    x = ax;
     type = atype;
     start = astart;
+}
+
+void addEvents(line *line, vector<event> &eventArr)
+{
+    if (line->type == 1)
+    {
+        event e1;
+        e1.init(line, line->k1, line->type, true);
+
+        event e2;
+        e2.init(line, line->k2, line->type, false);
+
+        eventArr.push_back(e1);
+        eventArr.push_back(e2);
+    }
+    else
+    {
+        event e;
+        e.init(line, line->m, line->type, false);
+        eventArr.push_back(e);
+    }
+}
+
+bool compareEvents(const event &e1, const event &e2)
+{
+    if (e1.type != e2.type)
+    {
+        if (e1.x != e2.x)
+            return e1.x < e2.x;
+        else if (e1.type == 1 && e1.start)
+        {
+            return true;
+        }
+        else if (e1.type == 1 && !e1.start)
+        {
+            return false;
+        }
+        else if (e2.type == 1 && e2.start)
+        {
+            return true;
+        }
+        else if (e2.type == 1 && !e2.start)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return e1.x < e2.x;
+    }
 }
 
 int main(int argc, char **argv)
@@ -57,36 +109,43 @@ int main(int argc, char **argv)
     line l5(0, 7, 8, 2); // v [0, 7] at x=8
     line l6(0, 7, 10, 2); // v [0, 7] at x=10
 
-    // manually sorting events
-    int nEvents = 9;
-    event *pEvents = new event[nEvents];
-    pEvents[0].init(&l1, 1, true);
-    pEvents[1].init(&l2, 1, true);
-    pEvents[2].init(&l3, 2, false);
-    pEvents[3].init(&l2, 1, false);
-    pEvents[4].init(&l1, 1, false);
-    pEvents[5].init(&l4, 1, true);
-    pEvents[6].init(&l5, 2, false);
-    pEvents[7].init(&l4, 1, false);
-    pEvents[8].init(&l6, 2, false);
+    line l7(8, 10, 3, 1); // h [8, 10] at y = 3
+
+    vector<event> eventArr;
+
+    addEvents(&l1, eventArr);
+    addEvents(&l2, eventArr);
+    addEvents(&l3, eventArr);
+    addEvents(&l4, eventArr);
+    addEvents(&l5, eventArr);
+    addEvents(&l6, eventArr);
+    addEvents(&l7, eventArr);
+
+    sort(eventArr.begin(), eventArr.end(), compareEvents);
 
     // A map of all horizontal lines by their y-coordinate
     map<int, line *> pq;
 
-    for (int i = 0; i < nEvents; i++)
+    for (size_t i = 0; i < eventArr.size(); i++)
     {
         // horizontal line
-        if (pEvents[i].type == 1)
+        if (eventArr[i].type == 1)
         {
             // starts a line
-            if (pEvents[i].start)
+            if (eventArr[i].start)
             {
-                pq[pEvents[i].pLine->m] = pEvents[i].pLine;
+                cout << "Adding horizontal line with x-coord " <<
+                    eventArr[i].x << endl;
+
+                pq[eventArr[i].pLine->m] = eventArr[i].pLine;
             }
             else
             {
+                cout << "Removing horizontal line with x-coord " <<
+                    eventArr[i].x << endl;
+
                 map<int, line *>::iterator it = 
-                    pq.find(pEvents[i].pLine->m);
+                    pq.find(eventArr[i].pLine->m);
                 assert(it != pq.end());
 
                 pq.erase(it);
@@ -95,18 +154,23 @@ int main(int argc, char **argv)
         else // vertical line
         {
             cout << "Processing vertical line " << 
-                pEvents[i].pLine->k1 << "," << pEvents[i].pLine->k2 <<
-                " at x = " << pEvents[i].pLine->m << endl;
+                eventArr[i].pLine->k1 << "," << eventArr[i].pLine->k2 <<
+                " at x = " << eventArr[i].pLine->m << endl;
 
-            int yl = pEvents[i].pLine->k1;
-            int yh = pEvents[i].pLine->k2;
+            int yl = eventArr[i].pLine->k1;
+            int yh = eventArr[i].pLine->k2;
 
             // Find all lines between [yl, yh]
             map<int, line *>::iterator it1 = pq.lower_bound(yl);
             map<int, line *>::iterator it2 = pq.upper_bound(yh);
 
+            int i = 0;
             for ( map<int, line *>::iterator it = it1; it != it2; it++)
             {
+                if (i++ == 0)
+                {
+                    cout << "Intersects with horizontal lines: " << endl;
+                }
                 cout << it->second->k1 << " " << it->second->k2 << endl;
             }
 
@@ -114,7 +178,6 @@ int main(int argc, char **argv)
         }
     }
 
-    delete [] pEvents;
     return 0;
 }
 
