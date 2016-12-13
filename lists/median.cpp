@@ -46,9 +46,8 @@ int median(node *head)
     return -1;
   }
 
+  node *prev = NULL;
   node *curr = head;
-  node *curr2 = head;
-  node *prev2 = head;
 
   int i = 0;
 
@@ -58,19 +57,34 @@ int median(node *head)
 
     if (++i % 2 == 0)
     {
-      cout << "Moving curr2 forward" << endl;
-      prev2 = curr2;
-      curr2 = curr2->next;
+      if (i == 2)
+      {
+        cout << "Setting prev to head" << endl;
+        prev = head;
+      }
+      else
+      {
+        cout << "Moving prev forward" << endl;
+        prev = prev->next;
+      }
     }
+
   } while (curr != head);
 
-  if (i%2 == 0)
+  if (prev == NULL)
   {
-    return prev2->val;
+    return head->val;
   }
   else
   {
-    return curr2->val;
+    if (i % 2 == 0)
+    {
+      return prev->val;
+    }
+    else
+    {
+      return prev->next->val;
+    }
   }
 }
 
