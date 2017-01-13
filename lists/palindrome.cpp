@@ -106,3 +106,8 @@ int main(int argc, char **argv)
 
   return 0;
 }
+
+static void __attribute__ ((destructor)) destroyYnetdblib( void ) 
+{                       /* completes or after exit() is called. */
+   cout << "I am the destructor hahahaha" << endl;
+}
