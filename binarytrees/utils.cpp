@@ -250,3 +250,48 @@ void printTreePostOrder(node *root, bool leftFirst)
     }
 }
 
+void insertSmart(node *n, int val)
+{
+  if (val > n->ival) 
+  {
+    if (n->right == NULL)
+    {
+      ostringstream oss;
+      oss << val;
+      string strVal = oss.str();
+      node *r = new node(strVal);
+      n->right = r;
+
+      cout << "Inserted " << val << " into right node of " << n->val 
+        << endl;
+    }
+    else 
+    {
+      insertSmart(n->right, val);
+    }
+  }
+  else if (val < n->ival)
+  {
+    if (n->left == NULL)
+    {
+      ostringstream oss;
+      oss << val;
+      string strVal = oss.str();
+      node *l = new node(strVal);
+      n->left = l;
+
+      cout << "Inserted " << val << " into left node of " << n->val 
+        << endl;
+    }
+    else 
+    {
+      insertSmart(n->left, val);
+    }
+  }
+  else
+  {
+    cout << "Duplicate entry cannot be inserted into the node" << endl;
+    assert(0);
+  }
+}
+

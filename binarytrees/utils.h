@@ -21,12 +21,14 @@ typedef struct node
     parent(NULL),
     val(str)
     {
+      ival = atoi(val.c_str());
     };
 
     node *left;
     node *right;
     node *parent;
     string val;
+    int ival;
 } node;
 
 node * readTree(const string &file);
@@ -34,3 +36,5 @@ void printTreeBF(node *root);
 void printTreePreOrder(node *root, bool leftFirst);
 void printTreeInOrder(node *root, bool leftFirst);
 void printTreePostOrder(node *root, bool leftFirst);
+
+void insertSmart(node *root, int val);
