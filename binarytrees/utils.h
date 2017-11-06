@@ -24,6 +24,17 @@ typedef struct node
       ival = atoi(val.c_str());
     };
 
+    node(const int i)
+    : left(NULL),
+    right(NULL),
+    parent(NULL),
+    ival(i)
+    {
+      ostringstream oss;
+      oss << ival;
+      val = oss.str();
+    };
+
     node *left;
     node *right;
     node *parent;
