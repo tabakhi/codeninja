@@ -1,3 +1,4 @@
+// 16.4: Enumerate permutations
 // Print all permutations in lexical order
 #include <climits>
 #include <stdlib.h>
@@ -5,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <stack>
+#include <algorithm>    // std::sort
 
 using namespace std;
 
@@ -14,12 +16,9 @@ void printperms(string &str, size_t i)
 {
   cout << __FUNCTION__ << " i = " << i << endl;
 
-  if (i == str.size() - 2)
+  if (i == str.size() - 1)
   {
     cout << str << endl;
-    swap(str[i], str[i+1]);
-    cout << str << endl;
-    swap(str[i], str[i+1]);
   }
   else
   {
@@ -28,8 +27,8 @@ void printperms(string &str, size_t i)
     {
       swap(str[i], str[j]);
       printperms(str, i+1);
-      swap(str[i], str[j]);
     }
+    std::sort(str.begin() + i, str.end());
   }
 
 }
