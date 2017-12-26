@@ -90,6 +90,7 @@ transform(const string &s1, const string &s2, vector<string> &path)
       path.push_back(next);
       next = added[next];
     }
+    path.push_back(next);
 
     return true;
   }
