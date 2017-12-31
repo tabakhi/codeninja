@@ -1,4 +1,4 @@
-https://practice.geeksforgeeks.org/problems/bipartite-graph/1
+//https://practice.geeksforgeeks.org/problems/bipartite-graph/1
 /*
    Please note that it's Function problem i.e.
    you need to write your solution in the form of Function(s) only.
