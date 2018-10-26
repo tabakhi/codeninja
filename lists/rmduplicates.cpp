@@ -1,5 +1,7 @@
-// Detect whether two linked lists intersect and at what node
-// Source: http://www.geeksforgeeks.org/write-a-function-to-get-the-intersection-point-of-two-linked-lists/
+// Remove all duplicates from a linked list whose elements are 
+// in sorted order
+// Duplicate elements are completely removed
+// E.g. 1->2->2->2->3 => 1->3
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
